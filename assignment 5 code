@@ -1,0 +1,146 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+void pushback();
+void delete();
+void printlist();
+void modify();
+
+struct Node
+{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+int main()
+{
+    struct Node* head=NULL;
+
+
+    while(1)
+    {
+        printf("\nOption Menu \n");
+        printf("\n\t1.Insert Record\n\t2.Delete Record\n\t3.Print Record\n\t4. Modify Record\n\t0.Exit\n");
+        
+        int x;
+        scanf("%d",&x);
+        switch (x)
+        {
+        case 1:
+            pushback(&head);
+            break;
+        case 2:
+            delete(&head);
+            break;
+        case 3:
+            printlist(head);
+            break;
+        case 4:
+            modify(head);
+            break;
+        case 0:
+            break;
+        }
+        if(x==0)
+            break;
+        
+
+
+    }
+}
+
+void pushback(struct Node** head)
+{
+    struct Node* temp=*head;
+    struct Node* new =(struct Node*) malloc(sizeof(struct Node));
+    printf("\nplease\n Enter data :\n ");
+    scanf("%d",&new->data);
+    new->next=NULL;
+
+    if(temp==NULL)
+    {
+        *head=new;
+        new->prev=NULL;
+    }
+    else
+    {
+        while(temp->next!=NULL)
+            temp=temp->next;
+        temp->next= new;
+        new->prev=temp;
+    }
+    printf("\nData inserting done !\n");
+}
+
+void delete(struct Node** head)
+{
+    int value;
+    struct Node *temp=*head;
+    printf("\nEnter Data for deleting :\n ");
+    scanf("%d",&value);
+    if(temp->data==value)
+    {
+        *head=temp->next;
+        temp->next->prev=NULL;
+        free(temp);
+        printf("\nData Deleted !\n");
+    }
+    else
+    {
+        while(temp!=NULL)
+        {
+            if(temp->data==value)
+            {
+                temp->prev->next=temp->next;
+                temp->next->prev=temp->prev;
+                free(temp);
+                printf("\nData Deleted !\n");
+                return;
+            }
+            temp=temp->next;
+        }
+
+        printf("\nEntered Wrong Value\n");
+    }
+}
+ 
+void modify(struct Node* head)
+{
+    int v,new;
+
+    printf("\nEnter Data to be modified: ");
+    scanf("%d",&v);
+    while(head!=NULL)
+    {
+        if(head->data==v)
+        {
+            printf("Enter new Data: ");
+            scanf("%d",&new);
+            head->data=new;
+            printf("Data modified !");
+            return;
+        }
+    }
+    printf("\nEntered weong value\n");
+
+}
+
+
+void printlist(struct Node* head)
+{
+    struct Node* last;
+    printf("\nForward Traversal \n");
+    while (head != NULL) {
+        printf(" %d ", head->data);
+        last = head;
+        head = head->next;
+    }
+
+    printf("\nReverse Traversal\n");
+    while (last != NULL) {
+        printf(" %d ", last->data);
+        last = last->prev;
+    }
+      }
